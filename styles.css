@@ -1,0 +1,106 @@
+﻿
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        h1, h2, h3, h4, h5, h6, .school-title {
+            font-family: 'Outfit', sans-serif;
+        }
+        .amharic-text {
+            font-family: 'Noto Sans Ethiopic', sans-serif;
+        }
+        .premium-card {
+            background: #FFFFFF;
+            border: 1px solid rgba(13, 35, 92, 0.06);
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .dark .premium-card {
+            background: #1E293B;
+            border-color: rgba(255, 255, 255, 0.05);
+        }
+        .premium-card:hover {
+            border-color: #B3D435;
+            transform: translateY(-2px);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #B3D435;
+            border-radius: 6px;
+        }
+        
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Smooth Content transitions & Slide Animations */
+        .slide-fade-transition {
+            transition: opacity 0.3s cubic-bezier(0.4, 0, 0.2, 1), transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes slideInRight {
+            from { opacity: 0; transform: translateX(30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        @keyframes slideInLeft {
+            from { opacity: 0; transform: translateX(-30px); }
+            to { opacity: 1; transform: translateX(0); }
+        }
+        .slide-right-anim {
+            animation: slideInRight 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+        .slide-left-anim {
+            animation: slideInLeft 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        }
+
+        .site-favicon {
+            border-radius: 50%;
+        }
+
+        .explorer-touch-card {
+            touch-action: pan-y;
+        }
+
+        .campus-image-card {
+            background-size: cover;
+            background-position: center;
+        }
+
+        .campus-image-1 {
+            background-image: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&w=800&q=80');
+        }
+
+        .campus-image-2 {
+            background-image: url('https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=800&q=80');
+        }
+
+        .campus-image-3 {
+            background-image: url('https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=800&q=80');
+        }
+
+        .campus-image-4 {
+            background-image: url('https://images.unsplash.com/photo-1497633762265-9d179a990aa6?auto=format&fit=crop&w=800&q=80');
+        }
+
+        .campus-image-5 {
+            background-image: url('https://images.unsplash.com/photo-1576267423445-b2e0074d68a4?auto=format&fit=crop&w=800&q=80');
+        }
+
+        .quiz-progress-fill {
+            width: 0%;
+        }
+
+        .pathway-progress-fill {
+            width: 25%;
+        }
+    

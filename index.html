@@ -1,0 +1,1475 @@
+﻿<!DOCTYPE html> 
+<html lang="en" class="scroll-smooth">
+<head>
+    <link rel="icon" href="assets/images/bna logo.jpg" type="image/png" class="site-favicon">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bikolos Nur Academy - We Teach How to Learn</title>
+    
+    <!-- Tailwind CSS Engine -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        logoGreen: {
+                            light: '#F5FBE4',
+                            DEFAULT: '#B3D435', // Primary Lime Green from Official Logo
+                            dark: '#92B220',
+                            deep: '#738F14'
+                        },
+                        logoBlue: {
+                            light: '#1A3370',
+                            DEFAULT: '#0D235C', // Main Deep Royal Blue from Official Logo
+                            dark: '#08173E',
+                            ultra: '#030A1F'
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        heading: ['Outfit', 'sans-serif'],
+                        amharic: ['Noto Sans Ethiopic', 'sans-serif']
+                    },
+                    boxShadow: {
+                        'soft': '0 4px 20px rgba(13, 35, 92, 0.02)',
+                        'hover-glow': '0 10px 30px rgba(179, 212, 53, 0.12)',
+                        'accent-btn': '0 4px 14px rgba(179, 212, 53, 0.35)'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Ethiopic:wght@300;400;600;700&family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Chart.js for beautiful streak visualization -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Firebase SDK (v9+ compat) -->
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+<body class="min-h-screen bg-white dark:bg-slate-950 text-logoBlue dark:text-slate-100 overflow-x-hidden">
+
+    <div id="customToast" class="fixed top-5 right-5 z-50 transform translate-x-80 opacity-0 transition-all duration-300 pointer-events-none">
+        <div class="flex items-center gap-3 bg-white dark:bg-slate-900 border-l-4 border-logoGreen shadow-lg rounded-lg p-4 max-w-sm">
+            <i id="toastIcon" class="fa-solid fa-circle-info text-logoGreen-dark text-lg"></i>
+            <span id="toastText" class="text-xs font-bold text-logoBlue dark:text-slate-200">Notification message</span>
+        </div>
+    </div>
+
+    <!-- MAIN LANDING PAGE CONTAINER -->
+    <div id="landing-page-view" class="transition-all duration-300">
+        
+        <div class="w-full bg-slate-50 dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 py-2.5 px-4 sm:px-8 text-xs relative z-50">
+            <div class="max-w-7xl mx-auto flex justify-between items-center">
+                <div class="flex items-center space-x-2 text-slate-500 dark:text-slate-400">
+                    <span class="w-2.5 h-2.5 rounded-full bg-logoGreen animate-pulse"></span>
+                    <span data-key="top-welcome" class="font-medium">Welcome to Bikolos Nur Academy</span>
+                </div>
+                
+                <div class="flex items-center space-x-3">
+                    <!-- Light / Dark toggle -->
+                    <button onclick="toggleDarkMode()" class="p-2 rounded bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-logoGreen text-logoBlue dark:text-slate-300 transition-all duration-300 flex items-center gap-1.5 font-semibold text-[11px]">
+                        <i id="themeIcon" class="fa-solid fa-moon text-logoGreen-dark"></i>
+                        <span id="themeBtnText">Dark</span>
+                    </button>
+
+                    <!-- Lang switch -->
+                    <button onclick="toggleLanguage()" class="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-logoGreen text-logoBlue dark:text-slate-300 px-3 py-2 rounded text-[11px] font-bold tracking-wide transition-all duration-300 flex items-center gap-1.5">
+                        <i class="fa-solid fa-language text-logoGreen-dark"></i>
+                        <span id="langBtnText">አማርኛ</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <nav class="sticky top-0 z-40 w-full bg-white/95 dark:bg-slate-950/95 backdrop-blur-md border-b border-slate-100 dark:border-slate-800 transition-all duration-300">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="flex items-center justify-between h-20">
+                    
+                    <div class="flex items-center space-x-3 cursor-pointer animate-fade-in" onclick="window.scrollTo({top: 0, behavior: 'smooth'})">
+                        <div class="w-14 h-14 rounded-full flex items-center justify-center border-2 border-logoGreen/35 bg-white shrink-0 overflow-hidden shadow-sm">
+                            <!-- Real Logo Integration with clean circle fit -->
+                            <img src="assets/images/bna logo3.png" onerror="this.onerror=null; this.src='https://placehold.co/150/0D235C/B3D435?text=BNA';" alt="Bikolos Nur Academy Logo" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <div class="flex items-center gap-1">
+                                <span class="block text-lg font-black text-logoBlue dark:text-white tracking-wide uppercase school-title">BIKOLOS NUR</span>
+                            </div>
+                            <div class="flex items-center gap-1.5">
+                                <span class="block text-[11px] text-logoGreen-dark font-black tracking-[0.15em] uppercase">Academy</span>
+                                <span class="text-slate-400 dark:text-slate-500 text-[10px] font-semibold border-l border-slate-200 dark:border-slate-800 pl-1.5 leading-none italic" data-key="nav-motto">"We Teach How to Learn"</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="hidden lg:flex space-x-8 text-sm font-medium">
+                        <button onclick="scrollToSection('hero')" class="text-logoGreen-dark font-bold relative py-2" data-key="menu-home">Home</button>
+                        <button onclick="scrollToSection('campuses')" class="text-slate-500 dark:text-slate-400 hover:text-logoBlue dark:hover:text-white transition-colors py-2" data-key="menu-campuses">Our Campuses</button>
+                        <button onclick="openPortal('about')" class="text-slate-500 dark:text-slate-400 hover:text-logoBlue dark:hover:text-white transition-colors py-2" data-key="menu-about">About Us</button>
+                        <button onclick="openPortal('contact')" class="text-slate-500 dark:text-slate-400 hover:text-logoBlue dark:hover:text-white transition-colors py-2" data-key="menu-contact">Contact</button>
+                    </div>
+
+                    <div class="hidden md:flex items-center space-x-3">
+                        <button onclick="openFullPortalSubpage()" class="px-5 py-2.5 rounded-xl bg-logoBlue hover:opacity-90 text-white font-extrabold text-xs uppercase tracking-wider transition-all duration-300 flex items-center gap-2 shadow-accent-btn border border-logoGreen/20">
+                            <i class="fa-solid fa-user-lock text-logoGreen"></i>
+                            <span data-key="btn-portal">School Portal</span>
+                        </button>
+                    </div>
+
+                    <div class="lg:hidden flex items-center">
+                        <button onclick="toggleMobileMenu()" class="text-logoBlue dark:text-white p-2 focus:outline-none">
+                            <i id="menuIcon" class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Drawer Navigation -->
+            <div id="mobileMenu" class="hidden lg:hidden bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 py-6 px-6 space-y-4 absolute top-full left-0 w-full shadow-lg transition-all duration-300">
+                <button onclick="scrollToSection('hero'); toggleMobileMenu()" class="block w-full text-left py-2 text-logoBlue dark:text-white font-bold" data-key="menu-home">Home</button>
+                <button onclick="scrollToSection('campuses'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-600 dark:text-slate-400 hover:text-logoBlue font-medium" data-key="menu-campuses">Our Campuses</button>
+                <button onclick="openPortal('about'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-600 dark:text-slate-400 hover:text-logoBlue font-medium" data-key="menu-about">About Us</button>
+                <button onclick="openPortal('contact'); toggleMobileMenu()" class="block w-full text-left py-2 text-slate-600 dark:text-slate-400 hover:text-logoBlue font-medium" data-key="menu-contact">Contact</button>
+                <button onclick="openFullPortalSubpage(); toggleMobileMenu()" class="w-full mt-2 py-3 bg-logoBlue text-white font-extrabold rounded-xl text-xs tracking-wider flex items-center justify-center gap-2 uppercase shadow-accent-btn">
+                    <i class="fa-solid fa-user-lock text-logoGreen"></i>
+                    <span data-key="btn-portal">School Portal</span>
+                </button>
+            </div>
+        </nav>
+
+        <section id="hero" class="relative min-h-[70vh] flex items-center justify-center pt-8 pb-16 px-4 sm:px-6 lg:px-8 overflow-hidden bg-white dark:bg-slate-950 transition-colors">
+            <div class="absolute top-1/4 left-1/12 w-72 h-72 bg-logoGreen-light/30 dark:bg-logoGreen-light/5 rounded-full blur-[100px] pointer-events-none"></div>
+
+            <div class="max-w-7xl mx-auto w-full grid grid-cols-1 lg:grid-cols-12 gap-12 items-center relative z-10">
+                
+                <div class="lg:col-span-7 text-center lg:text-left space-y-6">
+                    <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold leading-[1.2] text-logoBlue dark:text-white tracking-tight" id="heroTitle">
+                        <span data-key="hero-line1">Learning Made Simple:</span> <br>
+                        <span class="text-logoGreen-dark italic tracking-wide font-normal" id="dynamicHeroMotto">
+                            We Teach How to Learn.
+                        </span>
+                    </h1>
+                    
+                    <p class="text-slate-500 dark:text-slate-400 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed" data-key="hero-desc">
+                        At Bikolos Nur Academy, we go beyond standard book memorization. We help children ask questions, understand their lessons clearly, and grow with strong moral and Islamic values.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <button onclick="openFullPortalSubpage()" class="w-full sm:w-auto px-8 py-4 bg-logoGreen hover:bg-logoGreen-dark text-logoBlue font-extrabold rounded-xl transition-all duration-300 shadow-accent-btn hover:scale-[1.02] flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-circle-user text-sm"></i>
+                            <span data-key="hero-cta-portal">Access School Portal</span>
+                        </button>
+                        <button onclick="scrollToSection('portal-menu')" class="w-full sm:w-auto px-8 py-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:border-logoGreen text-logoBlue dark:text-slate-300 font-bold rounded-xl transition-all duration-300 flex items-center justify-center gap-2">
+                            <i class="fa-regular fa-compass text-logoGreen-dark text-sm"></i>
+                            <span data-key="hero-cta-explore">Learn Our Methods</span>
+                        </button>
+                    </div>
+
+                    <div class="grid grid-cols-3 gap-6 pt-8 border-t border-slate-100 dark:border-slate-800 max-w-md mx-auto lg:mx-0">
+                        <div>
+                            <span class="block text-2xl font-black text-logoBlue dark:text-white">1:8</span>
+                            <span class="block text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 uppercase tracking-wider font-bold" data-key="stat-ratio">Teacher-Student Ratio</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-logoGreen-dark">5</span>
+                            <span class="block text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 uppercase tracking-wider font-bold" data-key="stat-campuses">Addis Ababa Campuses</span>
+                        </div>
+                        <div>
+                            <span class="block text-2xl font-black text-logoBlue dark:text-white">A+</span>
+                            <span class="block text-[10px] text-slate-400 dark:text-slate-500 mt-0.5 uppercase tracking-wider font-bold" data-key="stat-accred">Modern Thinking maps</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="lg:col-span-5 flex flex-col justify-center w-full">
+                    <div class="bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800 p-6 rounded-2xl shadow-soft">
+                        <div class="mb-4 flex justify-between items-center">
+                            <div>
+                                <span class="bg-logoGreen text-logoBlue font-bold text-[9px] uppercase px-2 py-0.5 rounded tracking-wider" data-key="exp-badge">Interactive School Explorer</span>
+                                <h3 class="text-base font-bold text-logoBlue dark:text-white mt-1" data-key="exp-title">What & How We Learn</h3>
+                            </div>
+                            <!-- Swiping Hint for Mobile -->
+                            <span class="sm:hidden text-[9px] text-logoGreen-dark font-extrabold animate-pulse flex items-center gap-1">
+                                <i class="fa-solid fa-arrows-left-right"></i> Swipe Card
+                            </span>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-12 gap-4">
+                            <!-- Left Tab Buttons for Tablet & Desktop -->
+                           <div class="sm:col-span-5 flex overflow-x-auto sm:overflow-x-visible sm:flex-col gap-2 no-scrollbar pb-2 sm:pb-0 scroll-smooth snap-x snap-mandatory">
+                                <button id="tab_ethics" onclick="switchExplorer('ethics')" class="w-full text-left p-2.5 rounded-lg border border-logoGreen bg-logoGreen-light dark:bg-slate-800 text-xs font-bold transition-all text-logoBlue dark:text-white flex items-center gap-2 shrink-0 snap-center min-w-[140px] sm:min-w-0 shadow-sm hover:scale-[1.01]">
+                                    <i class="fa-solid fa-star-and-crescent text-logoGreen-dark"></i>
+                                    <span data-key="sub-ethics">Tarbiya & Akhlaq</span>
+                                </button>
+                                <button id="tab_languages" onclick="switchExplorer('languages')" class="w-full text-left p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-logoGreen text-xs font-bold transition-all text-logoBlue dark:text-white flex items-center gap-2 shrink-0 snap-center min-w-[140px] sm:min-w-0 shadow-sm hover:scale-[1.01]">
+                                    <i class="fa-solid fa-language text-logoGreen-dark"></i>
+                                    <span data-key="sub-lang">Languages</span>
+                                </button>
+                                <button id="tab_science" onclick="switchExplorer('science')" class="w-full text-left p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-logoGreen text-xs font-bold transition-all text-logoBlue dark:text-white flex items-center gap-2 shrink-0 snap-center min-w-[140px] sm:min-w-0 shadow-sm hover:scale-[1.01]">
+                                    <i class="fa-solid fa-calculator text-logoGreen-dark"></i>
+                                    <span data-key="sub-science">Science & Math</span>
+                                </button>
+                                <button id="tab_it" onclick="switchExplorer('it')" class="w-full text-left p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 hover:border-logoGreen text-xs font-bold transition-all text-logoBlue dark:text-white flex items-center gap-2 shrink-0 snap-center min-w-[140px] sm:min-w-0 shadow-sm hover:scale-[1.01]">
+                                    <i class="fa-solid fa-laptop-code text-logoGreen-dark"></i>
+                                    <span data-key="sub-it">IT & Coding</span>
+                                </button>
+                            </div>
+
+                            <!-- Interactive Slide Deck Card Container -->
+                            <div class="sm:col-span-7 relative">
+                                <div id="explorer-content-panel" class="bg-white dark:bg-slate-800 p-5 rounded-xl border border-slate-200/50 dark:border-slate-700 min-h-[220px] flex flex-col justify-between shadow-md cursor-grab active:cursor-grabbing select-none explorer-touch-card">
+                                    <div>
+                                        <h4 id="exp_subj_title" class="font-bold text-logoBlue dark:text-white text-xs mb-1" data-key="sub-ethics">Tarbiya & Akhlaq</h4>
+                                        <p id="exp_subj_desc" class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed mb-3">
+                                            We focus on building outstanding moral character, teaching polite habits, and instilling noble Islamic manners through daily routines.
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <span class="block text-[9px] uppercase font-bold text-slate-400 mb-1" data-key="exp-focus">Key School Focus</span>
+                                        <ul id="exp_subj_highlights" class="space-y-1 text-[10px] text-logoBlue dark:text-slate-200 font-semibold">
+                                            <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-logoGreen-dark"></i> Respecting parents & elders</li>
+                                            <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-logoGreen-dark"></i> Honest speaking & friendly habits</li>
+                                            <li class="flex items-center gap-1.5"><i class="fa-solid fa-circle-check text-logoGreen-dark"></i> Daily prayers & community manners</li>
+                                        </ul>
+                                    </div>
+                                </div>
+
+                                <!-- Mobile Indicator Dots & Arrows -->
+                                <div class="flex items-center justify-between mt-3 px-1 sm:hidden">
+                                    <button onclick="navigateExplorer(-1)" class="w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-logoBlue dark:text-white shadow-sm">
+                                        <i class="fa-solid fa-chevron-left"></i>
+                                    </button>
+                                    
+                                    <div class="flex gap-1.5 justify-center" id="explorerDotsContainer">
+                                        <span onclick="jumpToExplorerIndex(0)" class="w-2 h-2 rounded-full bg-logoGreen transition-all duration-300 cursor-pointer"></span>
+                                        <span onclick="jumpToExplorerIndex(1)" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all duration-300 cursor-pointer"></span>
+                                        <span onclick="jumpToExplorerIndex(2)" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all duration-300 cursor-pointer"></span>
+                                        <span onclick="jumpToExplorerIndex(3)" class="w-2 h-2 rounded-full bg-slate-300 dark:bg-slate-700 transition-all duration-300 cursor-pointer"></span>
+                                    </div>
+
+                                    <button onclick="navigateExplorer(1)" class="w-8 h-8 rounded-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center text-xs text-logoBlue dark:text-white shadow-sm">
+                                        <i class="fa-solid fa-chevron-right"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="py-16 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-100 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto space-y-3 mb-12">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-logoGreen-dark" data-key="isl-sub">Faith & Manners</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold text-logoBlue dark:text-white leading-tight" data-key="isl-heading">
+                        Tarbiya & Values: Our Ethical Foundation
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed" data-key="isl-desc">
+                        We believe true knowledge and good character must go together. We teach our students to practice their values with understanding, kindness, and respect for their elders.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-soft transition-all duration-300">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-900 text-logoBlue dark:text-logoGreen flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-star-and-crescent text-lg text-logoGreen-dark"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-logoBlue dark:text-white mb-2" data-key="isl-1-t">Akhlaq & Islamic Manners</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-key="isl-1-d">
+                            Teaching children how to respect parents, elders, treat others with love, and develop pristine personal habits.
+                        </p>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-soft transition-all duration-300">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-900 text-logoBlue dark:text-logoGreen flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-hands-praying text-lg text-logoGreen-dark"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-logoBlue dark:text-white mb-2" data-key="isl-2-t">Salah & Worship Practice</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-key="isl-2-d">
+                            Guiding children to perform their regular daily prayers correctly and understand their spiritual importance.
+                        </p>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl border border-slate-100 dark:border-slate-700 shadow-sm hover:shadow-soft transition-all duration-300">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-900 text-logoBlue dark:text-logoGreen flex items-center justify-center mb-4">
+                            <i class="fa-solid fa-heart text-lg text-logoGreen-dark"></i>
+                        </div>
+                        <h3 class="text-sm font-bold text-logoBlue dark:text-white mb-2" data-key="isl-3-t">Community Compassion</h3>
+                        <p class="text-[11px] text-slate-500 dark:text-slate-400 leading-relaxed" data-key="isl-3-d">
+                            Helping students understand social responsibility, kindness to peers, and clean communication styles.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="campuses" class="py-20 bg-white dark:bg-slate-950 transition-colors">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center max-w-2xl mx-auto space-y-3 mb-14">
+                    <span class="text-[10px] font-black uppercase tracking-[0.2em] text-logoGreen-dark" data-key="campuses-sub">Our Branches</span>
+                    <h2 class="text-3xl font-bold text-logoBlue dark:text-white leading-tight" data-key="campuses-heading">
+                        Our Five School Campuses
+                    </h2>
+                    <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed" data-key="campuses-desc">
+                        Bikolos Nur Academy serves Addis Ababa with 5 custom-designed campuses that specialize in specific age groups and stages of child development.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 justify-center">
+                    
+                    <!-- Campus 1 -->
+                    <div class="premium-card p-6 rounded-2xl shadow-sm flex flex-col justify-between group min-h-[300px]">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15 transition-all duration-500 group-hover:scale-105 pointer-events-none campus-image-card campus-image-1"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/75 pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-800 flex items-center justify-center mb-4 border border-logoGreen/20">
+                                <i class="fa-solid fa-school text-logoGreen-dark"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-logoBlue dark:text-white mb-2" data-key="camp-1-title">BETEL ELEMENTARY CAMPUS</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed" data-key="camp-1-desc">
+                                Focuses on young primary learners. Building key thinking maps, basic sciences, computer literacy, and deep ethical tarbiya.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex items-center justify-between text-[10px] relative z-10">
+                            <span class="text-slate-400"><i class="fa-solid fa-location-dot text-logoGreen-dark mr-1"></i> Bethel Area</span>
+                            <span class="font-extrabold text-logoGreen-dark" data-key="camp-elem">Elementary (Grades 1-8)</span>
+                        </div>
+                    </div>
+
+                    <!-- Campus 2 -->
+                    <div class="premium-card p-6 rounded-2xl shadow-sm flex flex-col justify-between group min-h-[300px]">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15 transition-all duration-500 group-hover:scale-105 pointer-events-none campus-image-card campus-image-2"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/75 pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-800 flex items-center justify-center mb-4 border border-logoGreen/20">
+                                <i class="fa-solid fa-graduation-cap text-logoGreen-dark"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-logoBlue dark:text-white mb-2" data-key="camp-2-title">WEYRA SEFERE HIGH SCHOOL CAMPUS</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed" data-key="camp-2-desc">
+                                Specializing in senior students, developing solid logic, computer coding, academic research, and excellent moral character.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex items-center justify-between text-[10px] relative z-10">
+                            <span class="text-slate-400"><i class="fa-solid fa-location-dot text-logoGreen-dark mr-1"></i> Weyra Sefer</span>
+                            <span class="font-extrabold text-logoGreen-dark" data-key="camp-high">High School (Grades 9-12)</span>
+                        </div>
+                    </div>
+
+                    <!-- Campus 3 -->
+                    <div class="premium-card p-6 rounded-2xl shadow-sm flex flex-col justify-between group min-h-[300px]">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15 transition-all duration-500 group-hover:scale-105 pointer-events-none campus-image-card campus-image-3"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/75 pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-800 flex items-center justify-center mb-4 border border-logoGreen/20">
+                                <i class="fa-solid fa-child text-logoGreen-dark"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-logoBlue dark:text-white mb-2" data-key="camp-3-title">SENE 30 KG CAMPUS</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed" data-key="camp-3-desc">
+                                A warm, safe play-school space for toddler discovery, initial coordination, letter games, and friendly manners.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex items-center justify-between text-[10px] relative z-10">
+                            <span class="text-slate-400"><i class="fa-solid fa-location-dot text-logoGreen-dark mr-1"></i> Sene 30 Area</span>
+                            <span class="font-extrabold text-logoGreen-dark" data-key="camp-kg">Kindergarten (Ages 3-6)</span>
+                        </div>
+                    </div>
+
+                    <!-- Campus 4 -->
+                    <div class="premium-card p-6 rounded-2xl shadow-sm flex flex-col justify-between group min-h-[300px]">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15 transition-all duration-500 group-hover:scale-105 pointer-events-none campus-image-card campus-image-4"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/75 pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-800 flex items-center justify-center mb-4 border border-logoGreen/20">
+                                <i class="fa-solid fa-book text-logoGreen-dark"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-logoBlue dark:text-white mb-2" data-key="camp-4-title">ALEMBANK ELEMENTARY CAMPUS</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed" data-key="camp-4-desc">
+                                Serving the Alem Bank community. Empowering elementary students to learn math, physical sciences, and cognitive thinking mechanics.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex items-center justify-between text-[10px] relative z-10">
+                            <span class="text-slate-400"><i class="fa-solid fa-location-dot text-logoGreen-dark mr-1"></i> Alem Bank</span>
+                            <span class="font-extrabold text-logoGreen-dark" data-key="camp-elem">Elementary (Grades 1-8)</span>
+                        </div>
+                    </div>
+
+                    <!-- Campus 5 -->
+                    <div class="premium-card p-6 rounded-2xl shadow-sm flex flex-col justify-between lg:col-span-1 md:col-span-2 md:max-w-md md:mx-auto lg:max-w-none lg:mx-0 w-full group min-h-[300px]">
+                        <div class="absolute inset-0 bg-cover bg-center opacity-25 dark:opacity-15 transition-all duration-500 group-hover:scale-105 pointer-events-none campus-image-card campus-image-5"></div>
+                        <div class="absolute inset-0 bg-gradient-to-t from-white via-white/70 to-transparent dark:from-slate-950 dark:via-slate-950/75 pointer-events-none"></div>
+
+                        <div class="relative z-10">
+                            <div class="w-10 h-10 rounded-xl bg-logoGreen-light dark:bg-slate-800 flex items-center justify-center mb-4 border border-logoGreen/20">
+                                <i class="fa-solid fa-face-smile text-logoGreen-dark"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-logoBlue dark:text-white mb-2" data-key="camp-5-title">ALEMBANK KG CAMPUS</h3>
+                            <p class="text-[11px] text-slate-500 dark:text-slate-400 mb-4 leading-relaxed" data-key="camp-5-desc">
+                                A colorful, happy start for Alem Bank toddlers. Structured English alphabet play, early numbers, and good daily habits.
+                            </p>
+                        </div>
+                        <div class="pt-4 border-t border-slate-200/50 dark:border-slate-800 flex items-center justify-between text-[10px] relative z-10">
+                            <span class="text-slate-400"><i class="fa-solid fa-location-dot text-logoGreen-dark mr-1"></i> Alem Bank</span>
+                            <span class="font-extrabold text-logoGreen-dark" data-key="camp-kg">Kindergarten (Ages 3-6)</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+        <section id="portal-menu" class="py-14 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-100 dark:border-slate-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center space-y-2 mb-10">
+                    <span class="text-[10px] font-black uppercase tracking-[0.25em] text-logoGreen-dark" data-key="p-menu-sub">School Gateway</span>
+                    <h2 class="text-2xl font-bold text-logoBlue dark:text-white" data-key="p-menu-title">School Information Guide</h2>
+                    <p class="text-xs text-slate-400 dark:text-slate-500 max-w-md mx-auto" data-key="p-menu-desc">Click below to find specific details about our teaching systems and branches instantly.</p>
+                </div>
+                
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-6 max-w-2xl mx-auto">
+                    <!-- Tab 1: About -->
+                    <button onclick="openPortal('about')" class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-logoGreen hover:shadow-hover-glow transition-all duration-300 text-center flex flex-col items-center justify-center gap-3 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-12 h-12 bg-logoGreen-light/50 dark:bg-slate-700/50 rounded-bl-full pointer-events-none"></div>
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen-light group-hover:bg-logoGreen text-logoBlue flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-school text-lg text-logoGreen-dark group-hover:text-logoBlue"></i>
+                        </div>
+                        <span class="font-bold text-logoBlue dark:text-white transition-colors text-xs tracking-wide" data-key="tab-about-title">About & Heritage</span>
+                    </button>
+                    
+                    <!-- Tab 2: Contact -->
+                    <button onclick="openPortal('contact')" class="p-6 rounded-2xl bg-white dark:bg-slate-800 border border-slate-100 dark:border-slate-700 hover:border-logoGreen hover:shadow-hover-glow transition-all duration-300 text-center flex flex-col items-center justify-center gap-3 group relative overflow-hidden">
+                        <div class="absolute top-0 right-0 w-12 h-12 bg-logoGreen-light/50 dark:bg-slate-700/50 rounded-bl-full pointer-events-none"></div>
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen-light group-hover:bg-logoGreen text-logoBlue flex items-center justify-center transition-colors">
+                            <i class="fa-solid fa-map-location-dot text-lg text-logoGreen-dark group-hover:text-logoBlue"></i>
+                        </div>
+                        <span class="font-bold text-logoBlue dark:text-white transition-colors text-xs tracking-wide" data-key="tab-cont-title">Campus & Contacts</span>
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <div id="interactiveDashboard" class="hidden py-16 px-4 sm:px-6 lg:px-8 bg-white dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 relative transition-all duration-500">
+            <div class="max-w-7xl mx-auto relative">
+                
+                <div class="flex items-center justify-between mb-8 pb-4 border-b border-slate-100 dark:border-slate-800">
+                    <div class="flex items-center gap-2">
+                        <span class="w-2.5 h-2.5 rounded-full bg-logoGreen animate-ping"></span>
+                        <h3 id="portalHeaderTitle" class="text-lg font-bold text-logoBlue dark:text-white">Campus Hub</h3>
+                    </div>
+                    <button onclick="closePortal()" class="px-3.5 py-1.5 bg-slate-50 dark:bg-slate-800 hover:bg-logoGreen rounded-lg text-logoBlue dark:text-white font-bold transition-all text-xs border border-slate-100 dark:border-slate-700 flex items-center gap-1.5">
+                        <span data-key="p-close">Close View</span>
+                        <i class="fa-solid fa-xmark text-[10px]"></i>
+                    </button>
+                </div>
+
+                <!-- ABOUT US SECTION -->
+                <div id="portalTab_about" class="hidden space-y-12">
+                    <div class="w-full max-w-4xl mx-auto text-center space-y-5">
+                        <span class="text-logoGreen-dark font-extrabold text-[10px] uppercase tracking-widest block" data-key="about-subtitle">Page 2: About Our Academy</span>
+                        <h4 class="text-xl sm:text-2xl font-bold text-logoBlue dark:text-white" data-key="about-heading">Welcome from our Administration</h4>
+                        <p class="text-slate-500 dark:text-slate-400 leading-relaxed text-xs sm:text-sm mx-auto max-w-2xl" data-key="about-p1">
+                            At Bikolos Nur Academy, learning is planned to be a valuable lifelong asset. Built on modern thinking methods (Thinking Maps), we help children build logical skills, high ethical values, and moral discipline.
+                        </p>
+                        
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-4 text-left max-w-3xl mx-auto">
+                            <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border-l-4 border-logoGreen">
+                                <span class="block font-bold text-logoBlue dark:text-white text-sm" data-key="about-v-title">Our Vision</span>
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1" data-key="about-v-desc">To foster polite, creative, and independent Muslim students who are ready to make a positive impact.</span>
+                            </div>
+                            <div class="bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border-l-4 border-logoBlue">
+                                <span class="block font-bold text-logoBlue dark:text-white text-sm" data-key="about-m-title">Our Mission</span>
+                                <span class="block text-xs text-slate-500 dark:text-slate-400 mt-1" data-key="about-m-desc">By using interactive teaching maps, we teach our students how to think clearly instead of memorizing blindly.</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CONTACTS SECTION (With Real Google Map Embedding) -->
+                <div id="portalTab_contact" class="hidden space-y-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-12 gap-10">
+                        <div class="lg:col-span-5 space-y-5">
+                            <span class="text-logoGreen-dark font-extrabold text-[10px] uppercase tracking-widest block" data-key="cont-subtitle">Geographic Locations</span>
+                            <h4 class="text-xl sm:text-2xl font-bold text-logoBlue dark:text-white" data-key="cont-heading">Find Our Campus Offices</h4>
+                            <p class="text-slate-500 dark:text-slate-400 text-xs sm:text-sm" data-key="cont-p1">
+                                We are located in the Kolfe Keranio sub-city around Bethel and Weyra Sefer area in Addis Ababa.
+                            </p>
+
+                            <div class="space-y-3">
+                                <div class="flex items-center gap-3 p-3 rounded-lg bg-slate-50 dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                                    <i class="fa-solid fa-location-dot text-logoGreen-dark shrink-0"></i>
+                                    <div>
+                                        <span class="block text-[9px] text-slate-400 font-bold uppercase" data-key="cont-addr-lbl">Main Hub</span>
+                                        <span class="block text-xs font-bold text-logoBlue dark:text-white" data-key="cont-addr-val">Kolfe Keranio, Bethel Area, Addis Ababa, Ethiopia</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="lg:col-span-7">
+                            <div class="p-4 bg-slate-50 dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 space-y-3">
+                                <h5 class="text-logoBlue dark:text-white font-bold text-xs" data-key="map-t">Addis Ababa Branches Map</h5>
+                                <div class="w-full h-64 rounded-xl overflow-hidden border border-slate-200 dark:border-slate-700">
+                                    <iframe 
+                                        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3940.6405230232495!2d38.69467651016834!3d9.005164989642084!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x164b8109bf3d61af%3A0xc3f87b8979fc913d!2sBikolos%20Nur%20Academy%20%7C%20Bethel%20%7C%20%E1%89%A2%E1%8A% his%E1%88%8E%E1%88%B5%20%E1%89%B1%E1%88%AD%20%E1%89%A0%E1%89%B4%E1%88%8D!5e0!3m2!1sen!2set!4v1718812328109!5m2!1sen!2set" 
+                                        class="w-full h-full border-0" 
+                                        allowfullscreen="" 
+                                        loading="lazy" 
+                                        referrerpolicy="no-referrer-when-downgrade">
+                                    </iframe>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <section class="py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto relative bg-white dark:bg-slate-950 transition-colors">
+            <div class="text-center max-w-2xl mx-auto space-y-3 mb-14">
+                <span class="text-[10px] font-black uppercase tracking-[0.2em] text-logoGreen-dark" data-key="phil-subtitle">Why We Are Different</span>
+                <h2 class="text-3xl font-bold text-logoBlue dark:text-white leading-tight" data-key="phil-heading">
+                    Teaching Minds How to Understand
+                </h2>
+                <p class="text-slate-400 dark:text-slate-500 text-xs sm:text-sm leading-relaxed" data-key="phil-p1">
+                    We use structured visual maps so kids can analyze math, science, and grammar naturally instead of just listening and writing notes.
+                </p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="premium-card p-6 rounded-2xl flex flex-col justify-between shadow-sm">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen text-logoBlue flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-puzzle-piece text-logoBlue"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-logoBlue dark:text-white" data-key="pil-1-t">Thinking Maps</h3>
+                        <p class="text-xs text-slate-400 dark:text-slate-400 leading-relaxed" data-key="pil-1-d">
+                            Using eight special brain visual maps, we show kids how to categorize, compare, and break down tough ideas by themselves.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-6 rounded-2xl flex flex-col justify-between shadow-sm">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen text-logoBlue flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-people-group text-logoBlue"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-logoBlue dark:text-white" data-key="pil-2-t">Active Classrooms</h3>
+                        <p class="text-xs text-slate-400 dark:text-slate-400 leading-relaxed" data-key="pil-2-d">
+                            Our classrooms are fully student-centered. Every child participates, speaks up, and learns to work nicely in groups.
+                        </p>
+                    </div>
+                </div>
+
+                <div class="premium-card p-6 rounded-2xl flex flex-col justify-between shadow-sm">
+                    <div class="space-y-3">
+                        <div class="w-10 h-10 rounded-xl bg-logoGreen text-logoBlue flex items-center justify-center text-lg">
+                            <i class="fa-solid fa-seedling text-logoBlue"></i>
+                        </div>
+                        <h3 class="text-base font-bold text-logoBlue dark:text-white" data-key="pil-3-t">Strong Moral Character</h3>
+                        <p class="text-xs text-slate-400 dark:text-slate-400 leading-relaxed" data-key="pil-3-d">
+                            Integrating Islamic principles (Akhlaq and Tarbiya) so kids grow up to be honest, respectful, and polite citizens.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Parent Testimonials -->
+        <section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-900 border-t border-b border-slate-100 dark:border-slate-800 rounded-3xl mb-12">
+            <div class="text-center max-w-xl mx-auto space-y-1.5 mb-10">
+                <span class="text-[10px] font-black uppercase tracking-widest text-logoGreen-dark" data-key="test-subtitle">Parent Feedback</span>
+                <h2 class="text-2xl font-bold text-logoBlue dark:text-white" data-key="test-heading">What Our Families Say</h2>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl relative border-t-2 border-logoGreen shadow-sm">
+                    <div class="space-y-3">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic" data-key="test-1-p">
+                            "The change in my child is real. Instead of asking me to tell him the answers directly, he tries to think and draw a map of the problem first!"
+                        </p>
+                        <span class="block text-[11px] font-bold text-logoBlue dark:text-white" data-key="test-1-auth">Mrs. Tsion B. (Parent)</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl relative border-t-2 border-logoBlue shadow-sm">
+                    <div class="space-y-3">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic" data-key="test-2-p">
+                            "I love how they respect Islamic Tarbiya. My kids are learning good habits (Akhlaq) alongside excellent modern science."
+                        </p>
+                        <span class="block text-[11px] font-bold text-logoBlue dark:text-white" data-key="test-2-auth">Brother Kassim A. (Parent)</span>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-xl relative border-t-2 border-logoGreen shadow-sm">
+                    <div class="space-y-3">
+                        <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic" data-key="test-3-p">
+                            "Bikolos Nur teaches them the tools of thinking. They do not just memorize for exams, they actually comprehend what they learn!"
+                        </p>
+                        <span class="block text-[11px] font-bold text-logoBlue dark:text-white" data-key="test-3-auth">Sister Huda S. (Parent)</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="bg-logoBlue text-slate-300 border-t border-logoGreen/20 pt-16 pb-8 text-xs relative z-10">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 grid grid-cols-1 md:grid-cols-12 gap-10 pb-12 border-b border-slate-800">
+                
+                <div class="md:col-span-5 space-y-4 text-slate-300">
+                    <div class="flex items-center space-x-3">
+                        <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center shrink-0 overflow-hidden border border-logoGreen/25 shadow-sm">
+                            <img src="assets/images/bna logo3.png" onerror="this.onerror=null; this.src='https://placehold.co/150/0D235C/B3D435?text=BNA';" alt="Academy Logo Footer" class="w-full h-full object-cover">
+                        </div>
+                        <div>
+                            <span class="block text-sm font-black text-white uppercase tracking-wider">Bikolos Nur Academy</span>
+                            <span class="block text-[9px] text-logoGreen font-bold uppercase tracking-wider italic">መማርን እናስተምራለን! - "We Teach How to Learn"</span>
+                        </div>
+                    </div>
+                    <p class="leading-relaxed max-w-xs text-slate-400" data-key="foot-desc">
+                        Helping students establish clear brain logical tools, Islamic Tarbiya, and strong academic curiosity in Addis Ababa.
+                    </p>
+                </div>
+
+                <div class="md:col-span-4 space-y-2.5">
+                    <h4 class="text-logoGreen font-bold text-[10px] uppercase tracking-wider" data-key="foot-addr-title">School Location & Contacts</h4>
+                    <ul class="space-y-2 text-slate-400">
+                        <li class="flex items-start gap-2">
+                            <i class="fa-solid fa-location-dot text-logoGreen mt-0.5 shrink-0"></i>
+                            <span data-key="foot-addr">Kolfe Keranio Sub-City, Around Bethel & Weyra Sefer, Addis Ababa, Ethiopia</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-phone text-logoGreen shrink-0"></i>
+                            <span>+251 113 490 097 / +251 912 096 366</span>
+                        </li>
+                        <li class="flex items-center gap-2">
+                            <i class="fa-solid fa-envelope text-logoGreen shrink-0"></i>
+                            <span>info@bikolosnuracademy.com</span>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="md:col-span-3 space-y-2.5">
+                    <h4 class="text-logoGreen font-bold text-[10px] uppercase tracking-wider" data-key="foot-campuses-title">Our Campuses</h4>
+                    <ul class="space-y-1.5 text-slate-400">
+                        <li data-key="camp-1-title">Betel Elementary Campus</li>
+                        <li data-key="camp-2-title">Weyra Sefere High School Campus</li>
+                        <li data-key="camp-3-title">Sene 30 KG Campus</li>
+                        <li data-key="camp-4-title">Alembank Elementary Campus</li>
+                        <li data-key="camp-5-title">Alembank KG Campus</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3 text-[10px] text-slate-500">
+                <span>&copy; 2026 Bikolos Nur Academy. Developed in Addis Ababa. All Rights Reserved.</span>
+                <div class="flex space-x-4">
+                    <span data-key="foot-sec">Safe Environment</span>
+                    <span data-key="foot-reg">Licensed by Education Bureau</span>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- NEW FULL PAGE IMMERSIVE PORTAL PAGE CONTAINER -->
+    <div id="full-portal-page" class="hidden min-h-screen bg-slate-50 dark:bg-slate-950 text-logoBlue dark:text-slate-100 flex flex-col transition-all duration-300">
+        
+        <!-- Portal Top Bar -->
+        <header class="bg-logoBlue text-white py-4 px-6 flex flex-col sm:flex-row gap-4 justify-between items-center border-b border-logoGreen/20 shadow-md">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 shrink-0 bg-white rounded-full overflow-hidden flex items-center justify-center border border-logoGreen/30 shadow-sm">
+                    <img src="assets/images/bna logo3.png" onerror="this.onerror=null; this.src='https://placehold.co/150/0D235C/B3D435?text=BNA';" alt="Bikolos Portal Logo" class="w-full h-full object-cover">
+                </div>
+                <div>
+                    <h4 class="font-extrabold text-xs sm:text-sm tracking-wide">BIKOLOS NUR SCHOOL PORTAL</h4>
+                    <p class="text-[9px] text-logoGreen font-bold uppercase tracking-wider">Gateway of Akhlaq & Logic</p>
+                </div>
+            </div>
+            
+            <div class="flex items-center gap-3">
+                <!-- Portal Dark Mode Toggle -->
+                <button onclick="toggleDarkMode()" class="p-2 rounded bg-slate-800 border border-slate-700 hover:border-logoGreen text-white transition-all duration-300 flex items-center gap-1 font-semibold text-[10px] uppercase tracking-wider">
+                    <i id="portalThemeIcon" class="fa-solid fa-moon text-logoGreen"></i>
+                    <span id="portalThemeBtnText">Dark Mode</span>
+                </button>
+
+                <!-- Return to Main Site Button -->
+                <button onclick="closeFullPortalSubpage()" class="px-4 py-2 bg-logoGreen text-logoBlue font-bold rounded-lg text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-1.5 shadow-sm">
+                    <i class="fa-solid fa-house-user"></i>
+                    <span>Return to Website</span>
+                </button>
+            </div>
+        </header>
+
+        <!-- Auth View Container -->
+        <div id="portal-auth-view" class="flex-1 flex items-center justify-center p-4">
+            <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl w-full max-w-4xl overflow-hidden shadow-xl grid grid-cols-1 md:grid-cols-12 min-h-[500px]">
+                
+                <!-- Left Banner Decoration -->
+                <div class="hidden md:flex md:col-span-5 bg-logoBlue p-8 flex-col justify-between text-white relative">
+                    <div class="absolute inset-0 opacity-10 bg-[radial-gradient(#b3d435_1px,transparent_1px)] [background-size:16px_16px]"></div>
+                    <div>
+                        <span class="text-[9px] tracking-widest font-black uppercase text-logoGreen">Secure Registry</span>
+                        <h3 class="text-xl font-bold mt-2">Connecting Teachers, Students & Parents</h3>
+                        <p class="text-[11px] text-slate-300 mt-3 leading-relaxed">
+                            Sign in using the assigned ID and password distributed by your school administrator to review performance, log active goals, or complete daily quizzes.
+                        </p>
+                    </div>
+                    
+                    <div class="border-t border-slate-700 pt-4">
+                        <span class="block text-[10px] text-logoGreen font-bold uppercase tracking-wider">Academy Motto:</span>
+                        <span class="block text-xs font-semibold italic text-slate-100">"We Teach How to Learn"</span>
+                    </div>
+                </div>
+
+                <!-- Right forms container -->
+                <div class="md:col-span-7 p-6 sm:p-8 flex flex-col justify-center space-y-4">
+                    
+                    <!-- Split Buttons for tab selection -->
+                    <div class="flex border-b border-slate-100 dark:border-slate-800 text-xs">
+                        <button class="flex-1 pb-3 text-center font-bold border-b-2 border-logoGreen text-logoBlue dark:text-white">Secure Portal Sign In</button>
+                    </div>
+
+                    <!-- LOGIN FORM -->
+                    <form id="portalForm_login" onsubmit="handlePortalLogin(event)" class="space-y-4">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Enter Assigned ID Number (የመለያ ቁጥር)</label>
+                            <input type="text" id="loginIdField" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="Enter assigned Admin ID">
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Password (የይለፍ ቃል)</label>
+                            <input type="password" id="loginPassword" required class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="••••••••">
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl bg-logoGreen text-logoBlue font-extrabold text-xs uppercase tracking-wider transition-all duration-300 shadow-accent-btn flex items-center justify-center gap-2">
+                            <i class="fa-solid fa-right-to-bracket"></i>
+                            <span>Verify & Enter Portal</span>
+                        </button>
+                    </form>
+
+                    <button type="button" onclick="handleGoogleAdminLogin()" class="w-full py-3 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-logoBlue dark:text-slate-100 font-extrabold text-xs uppercase tracking-wider transition-all duration-300 flex items-center justify-center gap-2">
+                        <i class="fa-brands fa-google text-red-500"></i>
+                        <span>Sign in with Google (Admin only)</span>
+                    </button>
+
+                    <div class="p-4 bg-slate-50 dark:bg-slate-800/50 rounded-xl border border-slate-100 dark:border-slate-700 space-y-1.5 text-center">
+                        <p class="text-[10px] text-slate-400 leading-relaxed">
+                            * Passwords & IDs are distributed securely by the School System Administrator.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- STUDENT MAIN PORTAL DASHBOARD (AFTER AUTH) -->
+        <div id="studentPortalDashboard" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl w-full mx-auto">
+            
+            <!-- Sidebar with Student Details -->
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-logoGreen-light dark:bg-slate-800 text-logoBlue dark:text-white flex items-center justify-center mx-auto mb-3 border border-logoGreen text-xl font-bold">
+                        <i class="fa-solid fa-user-graduate text-logoBlue dark:text-logoGreen"></i>
+                    </div>
+                    <h5 id="studentProfileName" class="font-bold text-sm text-logoBlue dark:text-white">Student Name</h5>
+                    <span id="studentProfileMeta" class="block text-[10px] text-slate-400 uppercase tracking-widest mt-1">Student • Betel Campus</span>
+                    
+                    <button onclick="handlePortalLogout()" class="mt-4 px-4 py-2 w-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 dark:bg-slate-800 dark:hover:bg-red-950 dark:text-slate-300 font-bold rounded-lg text-[10px] transition-colors flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out Profile</span>
+                    </button>
+                </div>
+
+                <!-- Live Campus Quiz Arena Launch Banner -->
+                <div class="bg-logoGreen-light dark:bg-slate-900 border border-logoGreen p-5 rounded-2xl shadow-sm space-y-4">
+                    <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Educational Quiz</span>
+                    <h5 class="text-xs font-black text-logoBlue dark:text-white">Knowledge Evaluation Arena</h5>
+                    <p class="text-[11px] text-slate-500 leading-relaxed">Test your learning progress with active 15-question daily evaluations.</p>
+                    <button onclick="launchPortalQuizWindow()" class="w-full py-2.5 bg-logoGreen text-logoBlue font-bold rounded-xl text-xs hover:bg-logoGreen-dark transition-all flex items-center justify-center gap-1.5 shadow-sm">
+                        <i class="fa-solid fa-bolt"></i>
+                        <span>Open Separate Quiz Arena</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Main active Student Workspaces -->
+            <div class="lg:col-span-9 space-y-6">
+                
+                <!-- Campus-specific Announcements Area -->
+                <div class="bg-logoBlue text-white p-5 rounded-2xl relative overflow-hidden">
+                    <div class="absolute top-0 right-0 w-24 h-24 bg-logoGreen-light/10 rounded-bl-full pointer-events-none"></div>
+                    <div class="flex items-center gap-2 text-[10px] uppercase font-bold text-logoGreen tracking-widest mb-1.5">
+                        <i class="fa-solid fa-bullhorn"></i>
+                        <span>Campus Announcements <span id="studentCampusAnnLabel" class="text-white"></span></span>
+                    </div>
+                    <div id="studentAnnFeed" class="space-y-3 text-xs">
+                        <p class="text-slate-300 italic text-[11px]">No bulletins posted for your campus.</p>
+                    </div>
+                </div>
+
+                <!-- Dynamic Academic Track -->
+                <div id="studentTrackContainer">
+                    <!-- Standard High School / Upper Grade Career planner -->
+                </div>
+
+                <!-- Assignment Submission Locker -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Digital Classroom</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Digital Homework Locker & Submissions</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Review active assignments published by your teachers and submit your homework notes directly.</p>
+                    </div>
+
+                    <div id="studentAssignmentsList" class="space-y-3">
+                        <!-- Homework list loads dynamically here -->
+                        <p class="text-[10px] text-slate-400 italic">No homework assigned yet for your campus.</p>
+                    </div>
+                </div>
+
+                <!-- Active Q&A Board -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Active Communication</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Ask your Advisor or Teacher</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Submit moral, religious, or lesson questions directly. View replies live below.</p>
+                    </div>
+
+                    <form onsubmit="handlePostInquiry(event)" class="space-y-3">
+                        <textarea id="studentInquiryText" required class="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen h-20" placeholder="Type your moral behavior or lessons questions here..."></textarea>
+                        <button type="submit" class="px-4 py-2 bg-logoGreen text-logoBlue font-bold rounded-lg text-xs hover:bg-logoGreen-dark transition-all">
+                            Submit Question
+                        </button>
+                    </form>
+
+                    <!-- Realtime responses -->
+                    <div class="space-y-2.5">
+                        <span class="text-[10px] uppercase font-bold text-slate-400 block">Your Questions Feed (My Campus)</span>
+                        <div id="studentQuestionsHistoryFeed" class="space-y-3 max-h-64 overflow-y-auto pr-1">
+                            <p class="text-[10px] text-slate-400 italic">No inquiries posted yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- PARENT PORTAL DASHBOARD (AFTER AUTH) -->
+        <div id="parentPortalDashboard" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl w-full mx-auto">
+            
+            <!-- Sidebar with Parent Details -->
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-logoGreen-light dark:bg-slate-800 text-logoBlue dark:text-white flex items-center justify-center mx-auto mb-3 border border-logoGreen text-xl font-bold">
+                        <i class="fa-solid fa-hands-holding-child text-logoBlue dark:text-logoGreen"></i>
+                    </div>
+                    <h5 id="parentProfileName" class="font-bold text-sm text-logoBlue dark:text-white">Parent Profile</h5>
+                    <span id="parentProfileMeta" class="block text-[10px] text-slate-400 uppercase tracking-widest mt-1">Parent Gate • Betel</span>
+                    <span id="parentChildLinkedID" class="block text-[9px] bg-logoGreen text-logoBlue px-2 py-0.5 rounded font-extrabold mt-2">Linking Child ID: None</span>
+                    
+                    <button onclick="handlePortalLogout()" class="mt-4 px-4 py-2 w-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 dark:bg-slate-800 dark:hover:bg-red-950 dark:text-slate-300 font-bold rounded-lg text-[10px] transition-colors flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out Profile</span>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Parent Interactive Workspace -->
+            <div class="lg:col-span-9 space-y-6">
+                
+                <!-- Child Manners Report & Behavioral Score Card -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Habits tracker log -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Child Daily Habit Log</span>
+                        <h4 class="text-xs font-black text-logoBlue dark:text-white">Child's Latest Habits Log Check</h4>
+                        
+                        <div id="parentChildHabitReport" class="space-y-2 text-xs text-slate-500">
+                            <p class="italic text-[11px]">No checklist logs registered by student yet.</p>
+                        </div>
+                    </div>
+
+                    <!-- Endorsement metrics awarded -->
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Teacher Endorsements</span>
+                        <h4 class="text-xs font-black text-logoBlue dark:text-white">Awarded Manners & Akhlaq Badges</h4>
+                        
+                        <div id="parentMannersBadgesFeed" class="space-y-2 max-h-48 overflow-y-auto">
+                            <p class="text-[10px] text-slate-400 italic">No teacher badges awarded yet this semester.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Direct Messages from Teachers Section -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Direct Communications</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-envelope-open-text text-logoGreen-dark"></i>
+                            <span>Messages from Teachers (Advisory Inbox)</span>
+                        </h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Review personalized messages and behavioral advice sent directly to you by your child's teachers.</p>
+                    </div>
+
+                    <div id="parentDirectMessagesFeed" class="space-y-3 max-h-60 overflow-y-auto pr-1">
+                        <p class="text-[10px] text-slate-400 italic">No direct messages received from teachers yet.</p>
+                    </div>
+                </div>
+
+                <!-- School Term-based Tuition Fees Ledger (Real-time tracking) -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Finance Portal</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Term Tuition Ledger (Real-time Checked)</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Review active tuition installments below. Payment badges are updated instantly in real-time when processed by the Admin office.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4" id="parentTuitionGridContainer">
+                        <!-- Installs injected programmatically linking to parent's child -->
+                        <div class="p-3.5 rounded-xl border border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 flex justify-between items-center text-xs">
+                            <div>
+                                <span class="block text-[9px] uppercase font-bold text-slate-400">Term 1 Tuition</span>
+                                <span class="font-extrabold text-logoBlue dark:text-white">8,500 ETB</span>
+                            </div>
+                            <span class="px-2 py-1 rounded bg-red-100 text-red-700 dark:bg-red-950/40 dark:text-red-300 text-[10px] font-bold">Unpaid</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Consultation Advisory Link -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Parent-Teacher Connection</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Request Meeting with Campus Advisor</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Enter details of your inquiries below to schedule a call or in-person evaluation with teachers.</p>
+                    </div>
+
+                    <form onsubmit="handleParentInquirySubmit(event)" class="space-y-3">
+                        <textarea id="parentInquiryText" required class="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen h-20" placeholder="e.g. Request to discuss math results..."></textarea>
+                        <button type="submit" class="px-5 py-2.5 bg-logoBlue text-white hover:opacity-90 font-bold rounded-lg text-xs transition-all">
+                            Submit Consultation Request
+                        </button>
+                    </form>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TEACHER MAIN PORTAL DASHBOARD (AFTER AUTH) -->
+        <div id="teacherPortalDashboard" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl w-full mx-auto">
+            
+            <!-- Sidebar with Teacher Profiles -->
+            <div class="lg:col-span-3 space-y-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-logoGreen-light dark:bg-slate-800 text-logoBlue dark:text-white flex items-center justify-center mx-auto mb-3 border border-logoGreen text-xl font-bold">
+                        <i class="fa-solid fa-chalkboard-user text-logoBlue dark:text-white"></i>
+                    </div>
+                    <h5 id="teacherProfileName" class="font-bold text-sm text-logoBlue dark:text-white">Ustadha Maryam</h5>
+                    <span id="teacherProfileMeta" class="block text-[10px] text-slate-400 uppercase tracking-widest mt-1">Teacher • Betel Campus</span>
+                    
+                    <button onclick="handlePortalLogout()" class="mt-4 px-4 py-2 w-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 dark:bg-slate-800 dark:hover:bg-red-950 dark:text-slate-300 font-bold rounded-lg text-[10px] transition-colors flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out Profile</span>
+                    </button>
+                </div>
+
+                <div class="p-5 bg-logoGreen-light text-logoBlue rounded-2xl border border-logoGreen space-y-2 text-xs font-semibold">
+                    <h5 class="font-bold uppercase tracking-wider text-[10px] text-logoGreen-dark">Teacher Checklist</h5>
+                    <ul class="space-y-1.5 text-[10px] leading-relaxed">
+                        <li>• Sync bulletins for your campus</li>
+                        <li>• Award Akhlaq Points for moral success</li>
+                        <li>• Post school assignments cleanly</li>
+                        <li>• Filter assignments by specific grade and section</li>
+                        <li>• Answer student lesson questions</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Main Teacher Workspaces -->
+            <div class="lg:col-span-9 space-y-6">
+                
+                <!-- Broadcast bulletin form -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-bullhorn text-logoGreen-dark"></i>
+                        <span>Broadcast New Announcement (<span id="teacherAnnCampusLabel"></span>)</span>
+                    </h4>
+                    <form onsubmit="handlePostAnnouncement(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="annTitle" required class="px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="Announcement Title">
+                            <input type="text" id="teacherInp_topic" class="px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="Topic Tag (e.g. Weekly Ethic, Exam Schedule)">
+                        </div>
+                        <textarea id="annContent" required class="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen h-20" placeholder="Type the bulletin contents..."></textarea>
+                        <button type="submit" class="px-4 py-2.5 bg-logoGreen text-logoBlue font-bold rounded-lg text-xs transition-all">
+                            Publish Bulletin
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Assignment Creator Terminal with Grade and Section target controls -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-file-signature text-logoGreen-dark"></i>
+                        <span>Create Digital Assignment Tasks</span>
+                    </h4>
+                    <form onsubmit="handlePostHomeworkTask(event)" class="space-y-3">
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <input type="text" id="hwSubject" required class="px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="Subject Name (e.g. Physics, History)">
+                            <input type="text" id="hwTitle" required class="px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen" placeholder="Homework Title">
+                        </div>
+                        
+                        <!-- Added Grade and Section target filter inputs -->
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Target Grade (ተማሪ ክፍል ደረጃ)</label>
+                                <select id="hwTargetGrade" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none">
+                                    <option value="All">All Grades (ሁሉንም)</option>
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                    <option value="9">Grade 9</option>
+                                    <option value="10">Grade 10</option>
+                                    <option value="11">Grade 11</option>
+                                    <option value="12">Grade 12</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Target Section (ሴክሽን)</label>
+                                <select id="hwTargetSection" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none">
+                                    <option value="All">All Sections (ሁሉንም)</option>
+                                    <option value="A">Section A</option>
+                                    <option value="B">Section B</option>
+                                    <option value="C">Section C</option>
+                                    <option value="D">Section D</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <textarea id="hwDesc" required class="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen h-20" placeholder="Type assignment prompts..."></textarea>
+                        <button type="submit" class="px-4 py-2.5 bg-logoBlue text-white font-bold rounded-lg text-xs transition-all hover:opacity-90">
+                            Assign to Target Class Group
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Review and Grade Submissions Workspace -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Submissions Terminal</span>
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white">Review Student Homework Uploads</h4>
+                    
+                    <div id="teacherHomeworkReviewFeed" class="space-y-3 max-h-72 overflow-y-auto">
+                        <!-- Loaded dynamically -->
+                        <p class="text-[10px] text-slate-400 italic">No submissions made by students yet.</p>
+                    </div>
+                </div>
+
+                <!-- Interactive Akhlaq Point Award Panel -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Manners Recognition</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Award Akhlaq & Behavior Points</h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Select any student of your campus to award positive reinforcement points.</p>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-end">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Select Student</label>
+                            <select id="teacherSel_student" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen">
+                                <option value="">-- No students loaded --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Behavior Badge Category</label>
+                            <select id="teacherSel_badgeType" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen">
+                                <option value="Respect">Respect & Manners (+10 Points)</option>
+                                <option value="Salah Habit">Salah Diligence (+10 Points)</option>
+                                <option value="Cooperation">Peer Kindness (+10 Points)</option>
+                                <option value="Study Goals">Study Target Diligence (+15 Points)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <button onclick="handleAwardAkhlaqPoints()" class="px-5 py-2.5 bg-logoGreen text-logoBlue font-bold rounded-xl text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-award"></i>
+                        <span>Endorse Student Behavior</span>
+                    </button>
+                </div>
+
+                <!-- Interactive Direct Messages to Parents Panel -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4 animate-fade-in">
+                    <div>
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Direct Communications</span>
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2">
+                            <i class="fa-solid fa-paper-plane text-logoGreen-dark"></i>
+                            <span>Send Direct Message to Parent</span>
+                        </h4>
+                        <p class="text-[11px] text-slate-400 mt-1">Select a student from your campus. Your message will be instantly delivered to their parent's portal dashboard.</p>
+                    </div>
+
+                    <div class="space-y-3">
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Select Student (Parent details are automatically linked)</label>
+                            <select id="teacherSel_studentMsg" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen">
+                                <option value="">-- Choose Student --</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Message Content</label>
+                            <textarea id="teacherDirectMsgText" required class="w-full p-3 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-950 text-xs text-logoBlue dark:text-white focus:outline-none focus:border-logoGreen h-20" placeholder="e.g., Dear parent, your child has shown exceptional focus during our physics thinking map exercises today!"></textarea>
+                        </div>
+                    </div>
+
+                    <button onclick="handleSendDirectMessageToParent()" class="px-5 py-2.5 bg-logoGreen text-logoBlue font-bold rounded-xl text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-2 shadow-sm">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span>Send Advisory Message</span>
+                    </button>
+                    
+                    <div class="space-y-2 pt-2 border-t border-slate-100 dark:border-slate-800">
+                        <span class="text-[9px] uppercase font-bold text-slate-400 block">Sent Messages Log (Advisories)</span>
+                        <div id="teacherSentMessagesFeed" class="space-y-2.5 max-h-48 overflow-y-auto pr-1">
+                            <p class="text-[10px] text-slate-400 italic">No direct messages sent yet.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Answer Board -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2">
+                        <i class="fa-solid fa-envelope-open-text text-logoGreen-dark"></i>
+                        <span>Incoming Student & Parent Questions Terminal</span>
+                    </h4>
+                    <p class="text-[11px] text-slate-400">Answer inquiries and consultation notes posted by parents/students on your campus.</p>
+
+                    <div id="teacherInquiriesTerminalFeed" class="space-y-4 max-h-96 overflow-y-auto pr-1">
+                        <p class="text-[10px] text-slate-400 italic">No incoming student questions yet.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- SYSTEM ADMIN MASTER DASHBOARD -->
+        <div id="systemAdminPortalDashboard" class="hidden flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 p-6 max-w-7xl w-full mx-auto">
+            <div class="lg:col-span-4 space-y-6">
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm text-center">
+                    <div class="w-16 h-16 rounded-full bg-logoGreen text-logoBlue flex items-center justify-center mx-auto mb-3 text-xl font-bold">
+                        <i class="fa-solid fa-user-shield"></i>
+                    </div>
+                    <h5 class="font-bold text-sm text-logoBlue dark:text-white">BNA Master System Administrator</h5>
+                    <span class="block text-[9px] bg-logoGreen text-logoBlue px-2.5 py-0.5 rounded font-black mt-2 tracking-widest uppercase">Admin Registry Gateway</span>
+                    
+                    <button onclick="handlePortalLogout()" class="mt-4 px-4 py-2 w-full bg-slate-100 hover:bg-red-50 text-slate-600 hover:text-red-600 dark:bg-slate-800 dark:hover:bg-red-950 dark:text-slate-300 font-bold rounded-lg text-[10px] transition-colors flex items-center justify-center gap-1.5">
+                        <i class="fa-solid fa-sign-out-alt"></i>
+                        <span>Sign Out Master</span>
+                    </button>
+                </div>
+
+                <!-- Admin Registry Quick Stats -->
+                <div class="p-5 bg-logoBlue text-white rounded-2xl space-y-2 text-xs">
+                    <h5 class="font-bold text-logoGreen">Academy Control Center</h5>
+                    <p class="text-[10px] leading-relaxed text-slate-300">
+                        Admin ID (`1000`) is configured to authorize logins, provision live student credentials, and manage the real-time Term Tuition checklist ledger.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Admin Action Desk -->
+            <div class="lg:col-span-8 space-y-6">
+                
+                <!-- Real-time Term Tuitions Payment Control Center (Admin view) -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <i class="fa-solid fa-sack-dollar text-logoGreen-dark"></i>
+                        <span>Term Tuitions Real-time Control Center</span>
+                    </h4>
+                    <p class="text-xs text-slate-400">Mark student payment logs. When marked Paid, parent dashboard badges transition to Paid immediately in real-time.</p>
+                    
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-100 dark:border-slate-800 text-slate-400 font-bold uppercase text-[9px]">
+                                    <th class="py-2">Student ID</th>
+                                    <th>Name</th>
+                                    <th class="text-center">Term 1 (8.5K)</th>
+                                    <th class="text-center">Term 2 (8.5K)</th>
+                                    <th class="text-center">Term 3 (8.5K)</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminTuitionTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Dynamic interactive checkboxes -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-5">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white flex items-center gap-2 pb-3 border-b border-slate-100 dark:border-slate-800">
+                        <i class="fa-solid fa-user-plus text-logoGreen-dark"></i>
+                        <span>Register & Provision New Account</span>
+                    </h4>
+
+                    <!-- Select Account Type Form -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Account Role</label>
+                            <select id="adminRegRole" onchange="toggleAdminRegRoleFields()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white">
+                                <option value="Student">Student (ተማሪ)</option>
+                                <option value="Teacher">Teacher (መምህር)</option>
+                                <option value="Parent">Parent (ወላጅ)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Assigned Campus</label>
+                            <select id="adminRegCampus" onchange="syncAdminGradeLimits()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white">
+                                <option value="Betel Elementary">Betel Elementary Campus</option>
+                                <option value="Weyra Sefere High">Weyra Sefere High Campus</option>
+                                <option value="Alembank Elementary">Alembank Elementary Campus</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Full Name</label>
+                            <input type="text" id="adminRegName" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white" placeholder="e.g. Abebe Kebede">
+                        </div>
+                    </div>
+
+                    <!-- Variable Input block depending on role selector -->
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2">
+                        <div>
+                            <label id="adminRegIdLabel" class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Assign Student ID (123 - 3783)</label>
+                            <input type="number" id="adminRegId" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white" placeholder="e.g. 500">
+                        </div>
+                        <div>
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Assigned Password</label>
+                            <input type="text" id="adminRegPassword" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white" value="pass123">
+                        </div>
+                        
+                        <!-- Parent Link child ID field (visible for Parents role) -->
+                        <div id="adminLinkChildField" class="hidden">
+                            <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Linked Child ID (123-3783)</label>
+                            <input type="number" id="adminLinkedChildId" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white" placeholder="Verify child student ID">
+                        </div>
+
+                        <!-- Grades & sections selectors (Student role) -->
+                        <div id="adminGradeSelectorBox" class="contents">
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Grade Level</label>
+                                <select id="adminRegGrade" onchange="toggleAdminRegStream()" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white">
+                                    <option value="5">Grade 5</option>
+                                    <option value="6">Grade 6</option>
+                                    <option value="7">Grade 7</option>
+                                    <option value="8">Grade 8</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Section</label>
+                                <select id="adminRegSection" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white">
+                                    <option value="A">Section A</option>
+                                    <option value="B">Section B</option>
+                                    <option value="C">Section C</option>
+                                    <option value="D">Section D</option>
+                                </select>
+                            </div>
+                            <div id="adminRegStreamField" class="hidden">
+                                <label class="block text-[9px] font-bold text-slate-400 uppercase mb-1">Stream (Grade 11/12 only)</label>
+                                <select id="adminRegStream" class="w-full px-3 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs text-logoBlue dark:text-white">
+                                    <option value="Natural">Natural Sciences</option>
+                                    <option value="Social">Social Sciences</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <button onclick="handleAdminProvisionAccount()" class="px-5 py-2.5 bg-logoGreen text-logoBlue font-bold rounded-xl text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-user-check"></i>
+                        <span>Provision Account</span>
+                    </button>
+                </div>
+
+                <!-- Current Provisioned Accounts Feed -->
+                <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-4">
+                    <h4 class="text-sm font-black text-logoBlue dark:text-white">Registered Users Directory</h4>
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-left text-xs">
+                            <thead>
+                                <tr class="border-b border-slate-100 dark:border-slate-800 text-slate-400 font-bold uppercase text-[9px]">
+                                    <th class="py-2">User ID</th>
+                                    <th>Name</th>
+                                    <th>Role</th>
+                                    <th>Campus & Details</th>
+                                    <th class="text-right">Manage</th>
+                                </tr>
+                            </thead>
+                            <tbody id="adminUsersTableBody" class="divide-y divide-slate-100 dark:divide-slate-800">
+                                <!-- Filled dynamically -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- IMMERSIVE SUB-PAGE: EXAMINATION HALL WORKSPACE -->
+    <div id="quiz-hall-page" class="hidden fixed inset-0 z-50 bg-slate-50 dark:bg-slate-950 text-logoBlue dark:text-slate-100 flex flex-col transition-all duration-300">
+        <header class="bg-logoBlue text-white py-4 px-6 flex justify-between items-center border-b border-logoGreen/20">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-graduation-cap text-logoGreen text-xl"></i>
+                <div>
+                    <h4 class="font-extrabold text-xs sm:text-sm tracking-wide uppercase">Bikolos Nur Academic Evaluation Arena</h4>
+                    <p class="text-[9px] text-logoGreen font-bold uppercase tracking-wider">Evaluation Hub for Grades 5 to 12</p>
+                </div>
+            </div>
+            <button onclick="exitQuizWindow()" class="px-4 py-2 bg-logoGreen text-logoBlue font-bold rounded-lg text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                <span>Close Arena</span>
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 max-w-4xl w-full mx-auto space-y-6">
+            <!-- Quiz Configuration & Subjects Selector -->
+            <div id="quizSelectionWorkspace" class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-4">
+                <h4 class="text-base font-black text-logoBlue dark:text-white" id="quizWelcomeTitle">Select Your Daily Topic</h4>
+                <p class="text-xs text-slate-500 dark:text-slate-400">Questions are generated dynamically using AI and refresh every 24 hours. Tests consist of exactly 15 questions with a 7-minute limit.</p>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Choose Subject Channel</label>
+                        <select id="portalQuizSubjectSelect" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-xs text-logoBlue dark:text-white">
+                            <!-- Filled dynamically depending on student's grade band -->
+                        </select>
+                    </div>
+                    <div class="flex items-end">
+                        <button onclick="initiate15QuestionExam()" class="w-full py-2.5 bg-logoGreen text-logoBlue font-extrabold rounded-xl text-xs uppercase tracking-wide hover:bg-logoGreen-dark shadow-accent-btn transition-all flex items-center justify-center gap-1.5">
+                            <i class="fa-solid fa-graduation-cap"></i>
+                            <span>Enter Exam Room</span>
+                        </button>
+                    </div>
+                </div>
+
+                <div class="border-t border-slate-100 dark:border-slate-800 pt-4 space-y-3">
+                    <span class="text-[10px] font-black uppercase text-logoGreen-dark flex items-center gap-1.5">
+                        <i class="fa-solid fa-trophy"></i>
+                        <span>Student Board Leaderboard (Real Records Only)</span>
+                    </span>
+                    <div id="arenaLeaderboardBody" class="space-y-2">
+                        <!-- Loaded dynamically -->
+                        <p class="text-[10px] text-slate-400 italic">No real scores submitted today.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Quiz Running Workspace -->
+            <div id="quizExecutionWorkspace" class="hidden bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-6">
+                <div class="flex justify-between items-center border-b border-slate-100 dark:border-slate-800 pb-3">
+                    <div>
+                        <span id="quizCurrentSubjectTitle" class="font-extrabold text-logoGreen-dark text-xs uppercase tracking-wider">Mathematics</span>
+                        <h4 class="text-xs text-slate-400">Daily Refresh Series • Question <b id="quizCurrentIndexLabel">1</b> of 15</h4>
+                    </div>
+                    <div class="px-3 py-1.5 bg-red-50 text-red-600 dark:bg-red-950/40 dark:text-red-300 font-bold text-[10px] rounded flex items-center gap-1">
+                        <i class="fa-solid fa-clock"></i>
+                        <span id="quizTimerText">07:00</span>
+                    </div>
+                </div>
+
+                <!-- Progress Bar -->
+                <div class="w-full bg-slate-100 dark:bg-slate-800 h-1.5 rounded-full overflow-hidden">
+                    <div id="quizProgressBar" class="bg-logoGreen h-full transition-all duration-300 quiz-progress-fill"></div>
+                </div>
+
+                <h5 id="quizQuestionBody" class="text-sm font-bold leading-relaxed text-logoBlue dark:text-white"></h5>
+                
+                <div id="quizOptionsGrid" class="grid grid-cols-1 gap-3">
+                    <!-- Loaded dynamically -->
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- IMMERSIVE SUB-PAGE: EXAMINATION HALL WORKSPACE -->
+    <div id="streak-tracker-page" class="hidden fixed inset-0 z-50 bg-slate-50 dark:bg-slate-950 text-logoBlue dark:text-slate-100 flex flex-col transition-all duration-300">
+        <header class="bg-logoBlue text-white py-4 px-6 flex justify-between items-center border-b border-logoGreen/20">
+            <div class="flex items-center gap-3">
+                <i class="fa-solid fa-fire text-logoGreen text-xl animate-bounce"></i>
+                <div>
+                    <h4 class="font-extrabold text-xs sm:text-sm tracking-wide uppercase">Bikolos Career & Study Target Arena</h4>
+                    <p class="text-[9px] text-logoGreen font-bold uppercase tracking-wider">Analyze Performance & Streaks</p>
+                </div>
+            </div>
+            <button onclick="exitStreakPage()" class="px-4 py-2 bg-logoGreen text-logoBlue font-bold rounded-lg text-xs hover:bg-logoGreen-dark transition-all flex items-center gap-1.5">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Back to Dashboard</span>
+            </button>
+        </header>
+
+        <div class="flex-1 overflow-y-auto p-4 sm:p-6 max-w-5xl w-full mx-auto space-y-6">
+            <div class="grid grid-cols-1 md:grid-cols-12 gap-6">
+                
+                <!-- Left metrics box -->
+                <div class="md:col-span-4 space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm text-center space-y-4">
+                        <span class="text-[10px] text-slate-400 uppercase tracking-wider font-extrabold block">Your Consecutive Days</span>
+                        <div class="inline-flex items-center justify-center w-28 h-28 rounded-full bg-logoGreen-light dark:bg-slate-800 border-2 border-logoGreen relative">
+                            <span class="text-3xl animate-pulse absolute top-1.5">🔥</span>
+                            <span id="streakDaysCountLabel" class="text-3xl font-black text-logoBlue dark:text-white mt-4">0</span>
+                        </div>
+                        <h4 class="text-xs font-bold text-logoGreen-dark">Keep up the momentum!</h4>
+                        <p class="text-[11px] text-slate-400">Streak increments every day you save study logs and record targets achieved.</p>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-3">
+                        <span class="text-[9px] font-bold text-logoGreen-dark uppercase tracking-widest block">Linked Track Projection</span>
+                        <h5 class="text-xs font-black text-logoBlue dark:text-white">Active Pathway: <span id="pathwayClassLabel" class="text-logoGreen-dark">General Study</span></h5>
+                        <div class="w-full bg-slate-100 dark:bg-slate-800 h-2 rounded-full overflow-hidden">
+                            <div id="pathwayPercentageBar" class="bg-logoGreen h-full pathway-progress-fill"></div>
+                        </div>
+                        <span id="pathwaySuggestionText" class="block text-[10px] text-slate-400">Aim to log more hours to crystallize custom career trajectories.</span>
+                    </div>
+                </div>
+
+                <!-- Right performance analytics graphs -->
+                <div class="md:col-span-8 space-y-6">
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-6 rounded-2xl shadow-sm space-y-4">
+                        <h4 class="text-sm font-black text-logoBlue dark:text-white">Study Target Hours Accumulation Graph</h4>
+                        <div class="w-full relative min-h-[250px]">
+                            <canvas id="streakPerformanceChart" class="w-full h-full"></canvas>
+                        </div>
+                    </div>
+
+                    <div class="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-5 rounded-2xl shadow-sm space-y-3">
+                        <h4 class="text-xs font-black text-logoBlue dark:text-white">Historical Study Log Entries</h4>
+                        <div id="streakHistoryLogsContainer" class="space-y-2 max-h-48 overflow-y-auto pr-1">
+                            <p class="text-[10px] text-slate-400 italic">No target logs saved yet this semester.</p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- All JavaScript logic is in assets/js/app.js -->
+    <!-- Firebase is the single source of truth for all application data -->
+    <!-- localStorage is used only for: theme preference, cached UI settings, non-sensitive temp data -->
+
+    <script src="assets/js/app.js"></script>
+</body>
+</html>
